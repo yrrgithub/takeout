@@ -86,4 +86,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Override
+    public void startorstop(Integer status, Long id) {
+        Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+
+    }
+
+    @Override
+    public Employee getbyId(Long id) {
+        Employee employee = employeeMapper.getbyId(id);
+        employee.setPassword("****");
+        return employee;
+
+    }
+
+    @Override
+    public void update(Employee employee) {
+        employeeMapper.update(employee);
+    }
+
+
 }

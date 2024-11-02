@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,8 +72,11 @@ public class EmployeeController {
         employeeService.save(employeeDTO);
         return Result.success();
     }
-
-
+    @PostMapping("/status/{status}")
+    public Result startorstop(@PathVariable Integer status,Long id) {
+        employeeService.startorstop(status,id);
+        return Result.success();
+    }
     /**
      * 退出
      *
@@ -79,6 +84,19 @@ public class EmployeeController {
      */
     @PostMapping("/logout")
     public Result<String> logout() {
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        Employee employee= employeeService.getbyId(id);
+        return Result.success(employee);
+    }
+    @PutMapping
+    public Result update(@RequestBody Employee employee) {
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(LocalDateTime.now());
+        employeeService.update(employee);
         return Result.success();
     }
 
